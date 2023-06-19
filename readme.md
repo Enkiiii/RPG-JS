@@ -12,7 +12,7 @@ Thus, the devil will follow you in your quest and will help you find what you ne
 Petit village de campagne médiéval
 Ville tranquille
 Quelques quêtes ( chasser les monstres, animaux, etc ) trouvables à l'hôtel de ville.
-Forgeron ( Permet de crafter des trucs ( Tout l’équipement )
+Forgeron ( Permet de crafter des trucs ( Tout l’équipement ))
 Auberge ( Permettra de récupérer une marmite pour l’aventure et cuisiner des trucs pour se heal )
 Station de voyage rapide ( Calèche )
 Agriculteur ( Récupérer des ressources avec un maximum par jour ( en temps de jeu ) )
