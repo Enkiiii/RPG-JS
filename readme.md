@@ -1,5 +1,11 @@
 # [Game_name]
 
+## Lancer le projet :
+Aller dans un terminal et écrire: ```python3 -m http.server 8888```<br>
+
+Se rendre sur l'adresse : ```localhost:8888/```
+
+
 ## Story 
 We're following the story of a young person who previously encountered a young devil. 
 This young devil will ask for our help in order to go help the friend of the young devil who's been seized by the Princess.
