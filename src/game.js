@@ -1,46 +1,97 @@
+class GameScene extends Phaser.Scene {
+  cursors;
+  player;
 
-function preload() {
-    this.load.image('player', "assets/player.png");
-    this.load.image("tiles", "assets/tileset_dungeon.png");
-    this.load.tilemapTiledJSON("map", "assets/dungeon-test.json");
-} //charger les assets
+  constructor() {
+    super('game');
+  }
 
-function create() {
+  preload() {
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.load.atlas('player', 'assets/player.png', 'assets/sprites/player.json');
+  }
 
-    this.arrow = this.input.keyboard.createCursorKeys();
+  create() {
+    this.player = this.physics.add.sprite(128, 128, 'player', 'walk-down-3.png');
 
-    const map = this.make.tilemap({key: "map", tileWidth: 32, tileHeight: 32})
-    const tileSet = map.addTilesetImage("tileset_dungeon", "tiles");
-    const layer = map.createLayer("entry", tileSet, 0,0);
-} 
+    this.anims.create({
+      key: 'player-idle-down',
+      frames: [{ key: 'player', frame: 'walk-down-3.png' }]
+    })
 
-function update() {
-    if(this.arrow.right.isDown){
-        this.player.x += 3;
-    } else if (this.arrow.left.isDown) { //if left arrow is pressed then move player to the left
-        this.player.x -= 3;
+    this.anims.create({
+      key: 'player-idle-up',
+      frames: [{ key: 'player', frame: 'walk-up-3.png' }]
+    })
+
+    this.anims.create({
+      key: 'player-idle-side',
+      frames: [{ key: 'player', frame: 'walk-side-3.png' }]
+    })
+
+    this.anims.create({
+      key: 'player-run-down',
+      frames: this.anims.generateFrameNames('player', { start: 1, end: 8, prefix: 'run-down-', suffix: '.png' }),
+      repeat: -1,
+      frameRate: 15,
+    })
+
+    this.anims.create({
+      key: 'player-run-up',
+      frames: this.anims.generateFrameNames('player', { start: 1, end: 8, prefix: 'run-up-', suffix: '.png' }),
+      repeat: -1,
+      frameRate: 15,
+    })
+
+    this.anims.create({
+      key: 'player-run-side',
+      frames: this.anims.generateFrameNames('player', { start: 1, end: 8, prefix: 'run-side-', suffix: '.png' }),
+      repeat: -1,
+      frameRate: 15,
+    })
+
+    this.player.anims.play('player-idle-down');
+  }
+
+  update(t, dt) {
+    if (!this.cursors || !this.player) {
+      return
     }
 
-    //same but with y axis
-    if(this.arrow.down.isDown) {
-        this.player.y += 3;
-    } else if (this.arrow.up.isDown) {
-        this.player.y -= 3;
+    const speed = 100;
+
+    if (this.cursors.left?.isDown) {
+      this.player.anims.play('player-run-side', true);
+      this.player.setVelocityX(-speed);
+      this.player.scaleX = -1;
     }
+    else if (this.cursors.right?.isDown) {
+      this.player.anims.play('player-run-side', true)
+      this.player.setVelocityX(speed)
+      this.player.scaleX = 1
+    }
+    else if (this.cursors.up?.isDown) {
+      this.player.anims.play('player-run-up', true)
+      this.player.setVelocityY(-speed)
+    }
+    else if (this.cursors.down?.isDown) {
+      this.player.anims.play('player-run-down', true)
+      this.player.setVelocityY(speed)
+    }
+    else {
+      this.player.play('player-idle-down')
+      this.player.setVelocity(0, 0)
+    }
+  }
 }
 
-//afficher les assets
-
 let config = new Phaser.Game({ //configuration phaserJS
-    type: Phaser.AUTO,
-    width: 1920,
-    height: 1080,
-    scene: {
-        preload: preload,
-        create: create,
-    },
-    physics: { default: 'arcade' },
-    parent: 'game',
+  width: 700,
+  height: 400,
+  backgroundColor: '#3498db',
+  scene: GameScene,
+  physics: { default: 'arcade' },
+  parent: 'game',
 });
 
 const game = new Phaser.Game(config);
